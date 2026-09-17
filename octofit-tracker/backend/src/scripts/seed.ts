@@ -15,6 +15,7 @@ async function seedDatabase() {
     await mongoose.connect(connectionString);
     console.log('Connected to octofit_db');
 
+    // Rebuild each collection so repeated seed runs stay deterministic.
     await Promise.all([
       User.deleteMany({}),
       Team.deleteMany({}),
