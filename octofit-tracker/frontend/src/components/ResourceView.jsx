@@ -39,14 +39,14 @@ function ResourceTable({ title, description, data, fields }) {
   );
 }
 
-export default function ResourceView({ resource, title, description, fields }) {
+export default function ResourceView({ resource, endpoint, title, description, fields }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     let active = true;
-    fetchResource(resource)
+    fetchResource(endpoint || resource)
       .then((records) => {
         if (active) setData(records);
       })
@@ -58,7 +58,7 @@ export default function ResourceView({ resource, title, description, fields }) {
       });
 
     return () => { active = false; };
-  }, [resource]);
+  }, [endpoint, resource]);
 
   return (
     <div>

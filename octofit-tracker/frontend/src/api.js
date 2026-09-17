@@ -25,7 +25,8 @@ export const normalizeCollection = (payload) => {
 };
 
 export async function fetchResource(resource) {
-  const response = await fetch(`${apiBaseUrl}/api/${resource}/`);
+  const endpoint = resource.startsWith('/api/') ? resource : `/api/${resource}/`;
+  const response = await fetch(`${apiBaseUrl}${endpoint}`);
   if (!response.ok) {
     throw new Error(`Failed to load ${resource}`);
   }

@@ -1,5 +1,6 @@
 import ResourceView from './ResourceView.jsx';
 
 export default function Users() {
-  return <ResourceView resource="users" title="Users" description="Registered students and fitness profiles." fields={['username', 'email', 'fitnessLevel', 'team']} />;
+  const endpoint = '/api/users/';
+  return <ResourceView resource={endpoint} endpoint={endpoint} title="Users" description="Registered students and fitness profiles." fields={['username', 'email', 'fitnessLevel', 'team']} />;
 }
