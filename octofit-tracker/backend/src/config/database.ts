@@ -1,18 +1,26 @@
 import mongoose from 'mongoose';
 
-const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
-const db = mongoose.connection;
+export const getApiBaseUrl = (): string => {
+  const codespaceName = process.env.CODESPACE_NAME;
+  return codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev`
+    : 'http://localhost:8000';
+};
 
-mongoose
-  .connect(connectionString)
-  .then(() => {
-    console.log('Connected to octofit_db');
-  })
-  .catch((error) => {
-    console.error('Error connecting to octofit_db:', error);
-    process.exit(1);
+export const connectDatabase = async () => {
+  const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
+
+  mongoose.connection.on('error', (error) => {
+    console.error('MongoDB connection error:', error);
   });
 
-db.on('error', console.error.bind(console, 'connection error:'));
+  await mongoose.connect(connectionString);
 
-export default db;
+  console.log(
+    `Connected to MongoDB: ${mongoose.connection.host}:${mongoose.connection.port}/${mongoose.connection.name}`
+  );
+
+  return mongoose.connection;
+};
+
+export default mongoose.connection;
